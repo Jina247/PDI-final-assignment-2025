@@ -1,0 +1,11 @@
+Mission Name,Mission Code,Destination Planet,Launch Year,Success Rate,Manned Mission,Astronauts
+Lunar Outpost,LO100,Moon,2030,98.5,true,John Miller:Commander:45:USA|Alice Wong:Scientist:38:China
+Martian Odyssey,MO101,Mars,2035,89.3,true,Sara Kim:Pilot:42:South Korea|David Smith:Engineer:39:Canada
+Europa Explorer,EE102,Europa,2040,78.2,true,Elena Petrova:Scientist:36:Russia
+Titan Voyage,TV103,Titan,2042,75.0,false,
+Neptune Research,NR104,Neptune,2045,64.5,true,Kofi Mensah:Engineer:40:Ghana
+Venusian Probe,VP105,Venus,2028,90.2,false,
+Asteroid Miner,AM106,Asteroid Belt,2033,85.0,true,Tariq Al-Farsi:Technician:41:UAE|Emma Li:Geologist:37:Australia|Liu Chang:Robotics Specialist:34:China
+Saturn Survey,SS107,Saturn,2047,71.9,true,Jose Ramirez:Scientist:33:Mexico
+Mercury Scout,MS108,Mercury,2026,93.0,false,
+Pluto Pioneer,PP109,Pluto,2050,62.3,true,Aisha Khan:Commander:39:India|Michael Grant:Pilot:35:UK
