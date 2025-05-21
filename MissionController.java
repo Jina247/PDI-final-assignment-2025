@@ -1,13 +1,34 @@
 import java.io.*;
 
 public class MissionController {
-    // instances of the class
-    private Mission[] missions;
+    private final Mission[] missions;
     private int missionCount;
 
     public MissionController(int capacity) {
         missions = new Mission[capacity];
         this.missionCount = 0;
+    }
+    public Mission[] getMissions() {
+        return missions;
+    }
+    public int getMissionCount() {
+        return missionCount;
+    }
+    public Mission[] getMannedMission(){
+        int count = 0;
+        for (int i = 0; i < missionCount; i++) {
+            if (missions[i].isManned()) {
+                count++;
+            }
+        }
+        Mission[] mannedMission = new Mission[count];
+        int idx = 0;
+        for (int j = 0;j < count; j++) {
+            if (mannedMission[j].isManned()) {
+                mannedMission[idx++] = mannedMission[j];
+            }
+        }
+        return mannedMission;
     }
     public void readFile(String fileName) {
         FileInputStream fileStream;
@@ -19,10 +40,9 @@ public class MissionController {
             fileStream = new FileInputStream(fileName);
             rdr = new InputStreamReader(fileStream);
             bufRdr = new BufferedReader(rdr);
-            line = bufRdr.readLine();
             bufRdr.readLine(); // skip the first line
 
-            while (line != null) {
+            while ((line = bufRdr.readLine()) != null) {
                 String[] part = line.split(",", 7);
                 String missionName = part[0].trim();
                 String missionCode = part[1].trim();
@@ -40,9 +60,11 @@ public class MissionController {
                         String role = astronautDetails[1].trim();
                         int age = Integer.parseInt(astronautDetails[2].trim());
                         String natiionality = astronautDetails[3].trim();
-                        Astronauts astronauts = new Astronauts(name, role, age, natiionality);
+                        Astronaut astronaut = new Astronaut(name, role, age, natiionality);
+                        mission.addAstronaut(astronaut);
                     }
                 }
+                missions[missionCount++] = mission;
             }
         }
         catch (FileNotFoundException e) {
@@ -52,5 +74,57 @@ public class MissionController {
             System.out.println("Error reading file:" + fileName);
         }
 
+    }
+
+    public void displayAllMissions(Mission mission) {
+        System.out.println("===================================");
+        System.out.println("Mission Details:");
+        System.out.println("Mission Name: " + mission.getMissionName());
+        System.out.println("Mission Code: " + mission.getMissionCode());
+        System.out.println("Destination Planet: " + mission.getDestinationPlanet());
+        System.out.println("Launch Year: " + mission.getLauchYear());
+        System.out.println("Success Rate: " + mission.getSuccessRate());
+        System.out.println("Is Manned: " + mission.isManned());
+        
+        for (int i = 0; i < mission.getAstronautCount(); i++) {
+            Astronaut astronaut = mission.getAstronaut()[i];
+            System.out.println("Astronauts Information:");
+            System.out.println(astronaut);
+            System.out.println("Name: " + astronaut.getName());
+            System.out.println("Age: " + astronaut.getAge()); 
+            System.out.println("Role: " + astronaut.getRole());
+            System.out.println("Nationality: " + astronaut.getNationality());
+            System.out.println("=========================");
+        }
+    }
+    public void displayMannedMissions(Mission mission) {
+        if (mission.isManned() == true) {
+            System.out.println("Mission Name: " + mission.getMissionName());
+            System.out.println("Mission Code: " + mission.getMissionCode());
+            System.out.println("Destination Planet: " + mission.getDestinationPlanet());
+            System.out.println("Launch Year: " + mission.getLauchYear());
+            System.out.println("Success Rate: " + mission.getSuccessRate());
+
+            for (int i = 0; i < mission.getAstronautCount(); i++) {
+                Astronaut astronaut = mission.getAstronaut()[i];
+                System.out.println("Astronauts Information:");
+                System.out.println(astronaut);
+                System.out.println("Name: " + astronaut.getName());
+                System.out.println("Age: " + astronaut.getAge()); 
+                System.out.println("Role: " + astronaut.getRole());
+                System.out.println("Nationality: " + astronaut.getNationality());
+                System.out.println("=========================");
+            }
+        }
+    }
+
+    public void displayUnmannedMission(Mission mission) {
+        if (mission.isManned() == false) {
+            System.out.println("Mission Name: " + mission.getMissionName());
+            System.out.println("Mission Code: " + mission.getMissionCode());
+            System.out.println("Destination Planet: " + mission.getDestinationPlanet());
+            System.out.println("Launch Year: " + mission.getLauchYear());
+            System.out.println("Success Rate: " + mission.getSuccessRate());
+        }
     }
 }
