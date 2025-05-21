@@ -6,7 +6,7 @@ public class Mission {
     private double successRate;
     private boolean isManned;
     private static final int MAX_ASTRONAUTS = 5;
-    Astronauts[] astronauts = new Astronauts[MAX_ASTRONAUTS];
+    Astronaut[] astronaut = new Astronaut[MAX_ASTRONAUTS];
     private int astronautCount = 0;
 
     public Mission(String missionName, String missionCode, String destinationPlanet, int lauchYear, double successRate, boolean isManned) {
@@ -35,12 +35,12 @@ public class Mission {
     public boolean isManned() {
         return isManned;
     }
-    public Astronauts[] getAstronauts() {
-        return astronauts;
+    public Astronaut[] getAstronaut() {
+        return astronaut;
     }
     public int getAstronautCount() {
         return astronautCount;
-    }
+    } 
 
     public void setMissionName(String missionName) {
         if (missionName == null || missionName.isEmpty()) {
@@ -75,17 +75,17 @@ public class Mission {
     public void setManned(boolean manned) {
         isManned = manned;
     }
-    public void setAstronauts(Astronauts[] astronauts) {
-        if (astronauts.length > MAX_ASTRONAUTS) {
+    public void setAstronaut(Astronaut[] astronaut) {
+        if (astronaut.length > MAX_ASTRONAUTS) {
             throw new IllegalArgumentException("Cannot have more than " + MAX_ASTRONAUTS + " astronauts!");
         }
-        this.astronauts = astronauts;
-        this.astronautCount = astronauts.length;
+        this.astronaut = astronaut;
+        this.astronautCount = astronaut.length;
     }
-    public void addAstronaut(Astronauts astronaut) {
+    public void addAstronaut(Astronaut pAstronaut) {
         if (astronautCount >= MAX_ASTRONAUTS) {
             throw new IllegalArgumentException("Cannot add more astronauts!");
         }
-        astronauts[astronautCount++] = astronaut;
+        astronaut[astronautCount++] = pAstronaut;
     }
 }

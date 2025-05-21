@@ -23,12 +23,28 @@ public class MissionController {
         }
         Mission[] mannedMission = new Mission[count];
         int idx = 0;
-        for (int j = 0;j < count; j++) {
-            if (mannedMission[j].isManned()) {
-                mannedMission[idx++] = mannedMission[j];
+        for (int j = 0;j < missionCount; j++) {
+            if (missions[j].isManned()) {
+                mannedMission[idx++] = missions[j];
             }
         }
         return mannedMission;
+    }
+    public Mission[] getUnannedMission(){
+        int count = 0;
+        for (int i = 0; i < missionCount; i++) {
+            if (!(missions[i].isManned())) {
+                count++;
+            }
+        }
+        Mission[] unMannedMission = new Mission[count];
+        int idx = 0;
+        for (int j = 0; j < missionCount; j++) {
+            if (!(missions[j].isManned())) {
+                unMannedMission[idx++] = missions[j];
+            }
+        }
+        return unMannedMission;
     }
     public void readFile(String fileName) {
         FileInputStream fileStream;
@@ -78,7 +94,7 @@ public class MissionController {
 
     public void displayAllMissions(Mission mission) {
         System.out.println("===================================");
-        System.out.println("Mission Details:");
+        System.out.println("Mission Details");
         System.out.println("Mission Name: " + mission.getMissionName());
         System.out.println("Mission Code: " + mission.getMissionCode());
         System.out.println("Destination Planet: " + mission.getDestinationPlanet());
@@ -86,45 +102,20 @@ public class MissionController {
         System.out.println("Success Rate: " + mission.getSuccessRate());
         System.out.println("Is Manned: " + mission.isManned());
         
-        for (int i = 0; i < mission.getAstronautCount(); i++) {
+        if (mission.isManned()) {
+            for (int i = 0; i < mission.getAstronautCount(); i++) {
             Astronaut astronaut = mission.getAstronaut()[i];
+            System.out.println("=========================");
             System.out.println("Astronauts Information:");
             System.out.println(astronaut);
             System.out.println("Name: " + astronaut.getName());
             System.out.println("Age: " + astronaut.getAge()); 
             System.out.println("Role: " + astronaut.getRole());
             System.out.println("Nationality: " + astronaut.getNationality());
-            System.out.println("=========================");
-        }
-    }
-    public void displayMannedMissions(Mission mission) {
-        if (mission.isManned() == true) {
-            System.out.println("Mission Name: " + mission.getMissionName());
-            System.out.println("Mission Code: " + mission.getMissionCode());
-            System.out.println("Destination Planet: " + mission.getDestinationPlanet());
-            System.out.println("Launch Year: " + mission.getLauchYear());
-            System.out.println("Success Rate: " + mission.getSuccessRate());
-
-            for (int i = 0; i < mission.getAstronautCount(); i++) {
-                Astronaut astronaut = mission.getAstronaut()[i];
-                System.out.println("Astronauts Information:");
-                System.out.println(astronaut);
-                System.out.println("Name: " + astronaut.getName());
-                System.out.println("Age: " + astronaut.getAge()); 
-                System.out.println("Role: " + astronaut.getRole());
-                System.out.println("Nationality: " + astronaut.getNationality());
-                System.out.println("=========================");
+            System.out.println("\n");
             }
         }
+
     }
 
-    public void displayUnmannedMission(Mission mission) {
-        if (mission.isManned() == false) {
-            System.out.println("Mission Name: " + mission.getMissionName());
-            System.out.println("Mission Code: " + mission.getMissionCode());
-            System.out.println("Destination Planet: " + mission.getDestinationPlanet());
-            System.out.println("Launch Year: " + mission.getLauchYear());
-            System.out.println("Success Rate: " + mission.getSuccessRate());
-        }
-    }
 }
