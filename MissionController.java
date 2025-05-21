@@ -30,6 +30,7 @@ public class MissionController {
         }
         return mannedMission;
     }
+    
     public Mission[] getUnannedMission(){
         int count = 0;
         for (int i = 0; i < missionCount; i++) {
@@ -46,51 +47,57 @@ public class MissionController {
         }
         return unMannedMission;
     }
-    public void readFile(String fileName) {
-        FileInputStream fileStream;
-        InputStreamReader rdr;
-        BufferedReader bufRdr;
-        String line;
-        
-        try {
-            fileStream = new FileInputStream(fileName);
-            rdr = new InputStreamReader(fileStream);
-            bufRdr = new BufferedReader(rdr);
-            bufRdr.readLine(); // skip the first line
 
-            while ((line = bufRdr.readLine()) != null) {
-                String[] part = line.split(",", 7);
-                String missionName = part[0].trim();
-                String missionCode = part[1].trim();
-                String destinationPlaner = part[2].trim();
-                int lauchYear = Integer.parseInt(part[3].trim());
-                double successRate = Double.parseDouble(part[4].trim());
-                boolean isManned = Boolean.parseBoolean(part[5].trim());
+public void readFile(String fileName) {
+    FileInputStream fileStream = null;
+    InputStreamReader rdr = null;
+    BufferedReader bufRdr = null;
+    String line;
 
-                Mission mission = new Mission(missionName, missionCode, destinationPlaner, lauchYear, successRate, isManned);
-                if (mission.isManned()) {
-                    String[] astronautsData = part[6].trim().split("\\|");
-                    for (String astronautData : astronautsData) {
-                        String [] astronautDetails = astronautData.split(":");
-                        String name = astronautDetails[0].trim();
-                        String role = astronautDetails[1].trim();
-                        int age = Integer.parseInt(astronautDetails[2].trim());
-                        String natiionality = astronautDetails[3].trim();
-                        Astronaut astronaut = new Astronaut(name, role, age, natiionality);
-                        mission.addAstronaut(astronaut);
-                    }
+    try {
+        fileStream = new FileInputStream(fileName);
+        rdr = new InputStreamReader(fileStream);
+        bufRdr = new BufferedReader(rdr);
+        bufRdr.readLine(); // skip the first line
+
+        while ((line = bufRdr.readLine()) != null) {
+            String[] part = line.split(",", 7);
+            String missionName = part[0].trim();
+            String missionCode = part[1].trim();
+            String destinationPlaner = part[2].trim();
+            int lauchYear = Integer.parseInt(part[3].trim());
+            double successRate = Double.parseDouble(part[4].trim());
+            boolean isManned = Boolean.parseBoolean(part[5].trim());
+
+            Mission mission = new Mission(missionName, missionCode, destinationPlaner, lauchYear, successRate, isManned);
+            if (mission.isManned()) {
+                String[] astronautsData = part[6].trim().split("\\|");
+                for (String astronautData : astronautsData) {
+                    String[] astronautDetails = astronautData.split(":");
+                    String name = astronautDetails[0].trim();
+                    String role = astronautDetails[1].trim();
+                    int age = Integer.parseInt(astronautDetails[2].trim());
+                    String natiionality = astronautDetails[3].trim();
+                    Astronaut astronaut = new Astronaut(name, role, age, natiionality);
+                    mission.addAstronaut(astronaut);
                 }
-                missions[missionCount++] = mission;
             }
+            missions[missionCount++] = mission;
         }
-        catch (FileNotFoundException e) {
-            System.out.println("File not found: " + fileName);
+    } catch (FileNotFoundException e) {
+        System.out.println("File not found: " + fileName);
+    } catch (IOException e) {
+        System.out.println("Error reading file:" + fileName);
+    } finally {
+        try {
+            if (bufRdr != null) bufRdr.close();
+            if (rdr != null) rdr.close();
+            if (fileStream != null) fileStream.close();
+        } catch (IOException e) {
+            System.out.println("Error closing file: " + fileName);
         }
-        catch (IOException e) {
-            System.out.println("Error reading file:" + fileName);
-        }
-
     }
+}
 
     public void displayAllMissions(Mission mission) {
         System.out.println("===================================");
@@ -116,6 +123,45 @@ public class MissionController {
             }
         }
 
+    }
+
+    public double[] getSuccessRatesArray() {
+        double[] successRatesArr = new double[missionCount];
+        for (int i = 0; i < missionCount; i++) {
+            successRatesArr[i] = missions[i].getSuccessRate();
+        }
+        return successRatesArr;
+    }
+
+    public double getAverageSuccessRate() {
+        double[] successRatesArr = getSuccessRatesArray();
+        double sum = 0;
+        for (int i = 0; i < successRatesArr.length; i++) {
+            sum += successRatesArr[i];
+        }
+        return sum / successRatesArr.length;
+    }
+    
+    public double getMaxSuccessRate() {
+        double[] successRatesArr = getSuccessRatesArray();
+        double max = successRatesArr[0];
+        for (int i = 1; i < successRatesArr.length; i++) {
+            if (successRatesArr[i] > max) {
+                max = successRatesArr[i];
+            }
+        }
+        return max;
+    }
+
+    public double getMinSuccessRate() {
+        double[] successRatesArr = getSuccessRatesArray();
+        double min = successRatesArr[0];
+        for (int i = 1; i < successRatesArr.length; i++) {
+            if (successRatesArr[i] < min) {
+                min = successRatesArr[i];
+            }
+        }
+        return min;
     }
 
 }
