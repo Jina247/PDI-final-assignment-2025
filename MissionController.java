@@ -7,7 +7,7 @@ public class MissionController {
     public MissionController(int capacity) {
         missions = new Mission[capacity];
         this.missionCount = 0;
-    }
+        }
     public Mission[] getMissions() {
         return missions;
     }
@@ -30,8 +30,8 @@ public class MissionController {
         }
         return mannedMission;
     }
-    
-    public Mission[] getUnannedMission(){
+
+    public Mission[] getUnMannedMission(){
         int count = 0;
         for (int i = 0; i < missionCount; i++) {
             if (!(missions[i].isManned())) {
@@ -122,7 +122,6 @@ public void readFile(String fileName) {
             System.out.println("\n");
             }
         }
-
     }
 
     public double[] getSuccessRatesArray() {
@@ -164,4 +163,41 @@ public void readFile(String fileName) {
         return min;
     }
 
+    public void writeFile(String fileName) {
+        FileOutputStream fOutStrm = null;
+        PrintWriter prWrt = null;
+        try {
+            fOutStrm = new FileOutputStream(fileName);
+            prWrt = new PrintWriter(fOutStrm);
+            for (int i = 0; i < missionCount; i++) {
+                Mission m = missions[i];
+                String line = m.getMissionCode()+ "," + m.getMissionName() + "," + m.getDestinationPlanet()+ ","  + m.getLauchYear()+ ","  + m.getSuccessRate()+ ","  + m.isManned();
+                prWrt.println(line);
+
+                if (m.isManned()) {
+                    Astronaut[] astronaut = m.getAstronaut();
+                    for (int j = 0; j < m.getAstronautCount(); j++) {
+                        Astronaut a = astronaut[j];
+                        String aStr = a.getName() + ":" + a.getRole() + ":" + a.getAge() + ":" + a.getNationality();
+                        if (m.getAstronautCount() > 1 && m.getAstronautCount() <= 5) {
+                            aStr += "|";
+                        }
+                        prWrt.println(aStr);
+                    }
+                }
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Error reading file:" + fileName);
+        }
+        finally {
+            try {
+                if (prWrt != null) prWrt.close();
+                if (fOutStrm != null) fOutStrm.close();  
+            }
+            catch (IOException e) {
+                System.out.println("Error closing file:" + fileName);
+            }
+        }
+    }
 }

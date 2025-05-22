@@ -9,7 +9,9 @@ public class Mission {
     Astronaut[] astronaut = new Astronaut[MAX_ASTRONAUTS];
     private int astronautCount = 0;
 
-    public Mission(String missionName, String missionCode, String destinationPlanet, int lauchYear, double successRate, boolean isManned) {
+    public Mission(String missionName, String missionCode, 
+                   String destinationPlanet, int lauchYear, 
+                   double successRate, boolean isManned) {
         this.missionName = missionName;
         this.missionCode = missionCode;
         this.destinationPlanet = destinationPlanet;
@@ -40,7 +42,7 @@ public class Mission {
     }
     public int getAstronautCount() {
         return astronautCount;
-    } 
+    }
 
     public void setMissionName(String missionName) {
         if (missionName == null || missionName.isEmpty()) {
