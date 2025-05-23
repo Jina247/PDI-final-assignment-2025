@@ -164,14 +164,14 @@ public class MissionController {
         return min;
     }
 
-    public void writeFile(String fileName) {
+    public void writeFile(String fileName, Mission m) {
         FileOutputStream fOutStrm = null;
         PrintWriter prWrt = null;
         try {
             fOutStrm = new FileOutputStream(fileName);
             prWrt = new PrintWriter(fOutStrm);
             for (int i = 0; i < missionCount; i++) {
-                Mission m = missions[i];
+                m = missions[i];
                 String line = m.getMissionCode()+ "," + m.getMissionName() + "," + m.getDestinationPlanet()+ ","  + m.getLauchYear()+ ","  + m.getSuccessRate()+ ","  + m.isManned();
                 prWrt.println(line);
 
@@ -205,79 +205,122 @@ public class MissionController {
             }
         }
     }
+
+    public void addMission() {
+        try (Scanner sc = new Scanner(System.in)) {
+            System.out.println("\t===Add a new mission===");
+            System.out.print("Enter mission  name: ");
+            String name = sc.nextLine();
+            
+            System.out.print("Enter mission code: ");
+            String code = sc.nextLine();
+
+            System.out.print("Enter destination planet: ");
+            String desPlanet = sc.nextLine();
+
+            System.out.print("Enter launch year: ");
+            int year = sc.nextInt();
+
+            System.out.print("Enter success rate: ");
+            double rate = sc.nextDouble();
+
+            System.out.print("Is the mission manned?");
+            boolean isManned = Boolean.parseBoolean(sc.nextLine());
+
+            Mission newMission = new Mission(name, code, desPlanet, year, rate, isManned);
+            
+            if (newMission.isManned()) {
+                System.out.println("\t===Add new astronaut(s)===");
+                System.out.print("Enter the number of astronauts (from 1 upto 5): ");
+                int astronaut_count = sc.nextInt();
+                for (int i = 0; i < astronaut_count; i++) {
+                    System.out.print("Enter astronaut's name");
+                    String asName = sc.nextLine();
+                    System.out.print("Enter astronaut's role: ");
+                    String asRole = sc.nextLine();
+                    System.out.print("Enter astronaut's age: ");
+                    int asAge = sc.nextInt();
+                    System.out.print("Enter astronaut's nationality: ");
+                    String asNationality = sc.nextLine();
+                    Astronaut astronaut = new Astronaut(asName, asRole, asAge, asNationality);
+                    newMission.addAstronaut(astronaut);
+                }
+            }
+            missions[missionCount++] = newMission;
+            System.out.println("Mission added!");
+            writeFile("data.csv", newMission);
+        }
+    }
     // Add scanner in main asking mission code to edit
     public void editMission(String missionCode) {
         try (Scanner sc = new Scanner(System.in)) {
             for (int i = 0; i < missionCount; i++) {
                 if (missions[i].getMissionCode().equals(missionCode)) {
-                    Mission m = missions[i];
+                    Mission eMission = missions[i];
                     System.out.println("Edit mission");
-                    System.out.println("Mission Name: " + m.getMissionName());
-                    
-                    System.out.println("Enter a new mission name (or Enter to keep): " + m.getMissionName());
+                    System.out.println("Mission Name: " + eMission.getMissionName());
+
+                    System.out.print("Enter a new mission name (or Enter to keep): ");
                     String newName = sc.nextLine();
                     if (!newName.isEmpty()) {
-                        m.setMissionName(newName);
+                        eMission.setMissionName(newName);
                     }
-                    
-                    System.out.println("Enter a new mission code (or Enter to keep): " + m.getMissionCode());
+
+                    System.out.print("Enter a new mission code (or Enter to keep): ");
                     String newCode = sc.nextLine();
                     if (!newCode.isEmpty()) {
-                        m.setMissionCode(newCode);
+                        eMission.setMissionCode(newCode);
                     }
-                    System.out.println("Enter a new destination planet (or Enter to keep): " + m.getDestinationPlanet());
+
+                    System.out.print("Enter a new destination planet (or Enter to keep): ");
                     String newPlanet = sc.nextLine();
                     if (!newPlanet.isEmpty()) {
-                        m.setDestinationPlanet(newPlanet);
+                        eMission.setDestinationPlanet(newPlanet);
                     }
-                    
-                    System.out.println("Enter a new lauch year (or Enter to keep): " + m.getLauchYear());
-                    int newYear = sc.nextInt();
-                    m.setLauchYear(newYear);
-                    
-                    System.out.println("Enter a new success rate (or Enter to keep): " + m.getSuccessRate());
-                    double newRate = sc.nextDouble();
-                    m.setSuccessRate(newRate);
-                    
-                    System.out.println("Is the mission manned? (true/false): " + m.isManned());
-                    boolean isManned = sc.nextBoolean();
-                    m.setManned(isManned);
-                    
-                    if (m.isManned()) {
-                        
+
+                    System.out.print("Enter a new launch year (or Enter to keep): ");
+                    String yearInput = sc.nextLine();
+                    if (!yearInput.isEmpty()) {
+                        try {
+                            int newYear = Integer.parseInt(yearInput);
+                            eMission.setLauchYear(newYear);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid year. Keeping previous value.");
+                        }
+                    }
+
+                    System.out.print("Enter a new success rate (or Enter to keep): ");
+                    String rateInput = sc.nextLine();
+                    if (!rateInput.isEmpty()) {
+                        try {
+                            double newRate = Double.parseDouble(rateInput);
+                            eMission.setSuccessRate(newRate);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid rate. Keeping previous value.");
+                        }
+                    }
+
+                    System.out.print("Is the mission manned? (true/false or Enter to keep): ");
+                    String mannedInput = sc.nextLine();
+                    if (!mannedInput.isEmpty()) {
+                        boolean isManned = Boolean.parseBoolean(mannedInput);
+                        eMission.setManned(isManned);
+                        if (isManned) {
+                            System.out.print("Enter the astronaut's name to edit (or Enter to skip): ");
+                            String astronautName = sc.nextLine();
+                            if (!astronautName.isEmpty()) {
+                                eMission.editAstronaut(astronautName);
+                            }
+                        } else {
+                            eMission.removeAstronaut();
+                        }
                     }
                     System.out.println("Mission updated!");
+                    // After editing, write to file
+                    writeFile("data.csv", eMission);
+                    break;
                 }
             }
         }
     }
-
-    public void editAstronaut(Mission mission) {
-        try (Scanner sc = new Scanner(System.in)) {
-            System.out.println("Enter an astronaut's name to edit:");
-            String astronaut_name = sc.nextLine();
-            Astronaut[] astronauts = mission.getAstronaut();
-            for (int i = 0; i < mission.getAstronautCount(); i++) {
-                Astronaut a = astronauts[i];
-                if (a.getName().equals(astronaut_name)) {
-                    System.out.println("Enter a new name (or Enter to keep): " + a.getName());
-                    String name = sc.nextLine(); 
-                    a.setName(name);
-                    
-                    String role = sc.nextLine();
-                    a.setRole(role);
-
-                    int age = sc.nextInt();
-                    a.setAge(age);
-
-                    String nationality = sc.nextLine();
-                    a.setNationality(nationality);
-                }
-                System.out.println("Astronaut updated!");
-            }
-            
-        }
-
-    }
-    
 }
