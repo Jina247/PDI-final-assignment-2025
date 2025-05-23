@@ -164,14 +164,14 @@ public class MissionController {
         return min;
     }
 
-    public void writeFile(String fileName, Mission m) {
+    public void writeFile(String fileName) {
         FileOutputStream fOutStrm = null;
         PrintWriter prWrt = null;
         try {
             fOutStrm = new FileOutputStream(fileName);
             prWrt = new PrintWriter(fOutStrm);
             for (int i = 0; i < missionCount; i++) {
-                m = missions[i];
+                Mission m = missions[i];
                 String line = m.getMissionCode()+ "," + m.getMissionName() + "," + m.getDestinationPlanet()+ ","  + m.getLauchYear()+ ","  + m.getSuccessRate()+ ","  + m.isManned();
                 prWrt.println(line);
 
@@ -248,7 +248,7 @@ public class MissionController {
             }
             missions[missionCount++] = newMission;
             System.out.println("Mission added!");
-            writeFile("data.csv", newMission);
+            writeFile("data.csv");
         }
     }
     // Add scanner in main asking mission code to edit
@@ -317,9 +317,29 @@ public class MissionController {
                     }
                     System.out.println("Mission updated!");
                     // After editing, write to file
-                    writeFile("data.csv", eMission);
+                    writeFile("data.csv");
                     break;
                 }
+            }
+        }
+    }
+
+    public void displayAs(String missionCode) {
+        for (int i = 0; i < missionCount; i++) {
+            Mission m = missions[i];
+            if (m.getMissionCode().equals(missionCode)) {
+                if (m.isManned()) {
+                    Astronaut[] astronauts = m.getAstronaut();
+                    for (int j = 0; j < m.getAstronautCount(); j++) {
+                        m.displayAstronaut(astronauts[j]);
+                    }
+                }
+                else {
+                    System.out.println("No astronauts found because of unmanned mission.");
+                }
+            }
+            else {
+                System.out.println("No mission code found.");
             }
         }
     }

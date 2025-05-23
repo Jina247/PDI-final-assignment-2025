@@ -144,4 +144,8 @@ public class Mission {
             System.out.println("No astronauts found with nationality: " + asNationality);
         }   
     }
+
+    public void displayAstronaut(Astronaut a) {
+        a.toString();
+    }
 }
