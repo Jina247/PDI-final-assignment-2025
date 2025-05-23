@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class Mission {
+    /* Class attributes */
     private String missionName;
     private String missionCode;
     private String destinationPlanet;
@@ -11,6 +12,7 @@ public class Mission {
     Astronaut[] astronaut = new Astronaut[MAX_ASTRONAUTS];
     private int astronautCount = 0;
 
+    /* Constructors with given parameters */
     public Mission(String missionName, String missionCode, String destinationPlanet, int launchYear, double successRate, boolean isManned) {
         this.missionName = missionName;
         this.missionCode = missionCode;
@@ -19,6 +21,8 @@ public class Mission {
         this.successRate = successRate;
         this.isManned = isManned;
     }
+
+    /* Accessors */
     public String getMissionName() {
         return missionName;
     }
@@ -44,6 +48,7 @@ public class Mission {
         return astronautCount;
     }
 
+    /* Mutators with validation */
     public void setMissionName(String missionName) {
         if (missionName == null || missionName.isEmpty()) {
             throw new IllegalArgumentException("Mission name cannot be null or empty");
@@ -84,39 +89,142 @@ public class Mission {
         this.astronaut = astronaut;
         this.astronautCount = astronaut.length;
     }
+
+    /* Function: addAstronaut()
+     * * Import: None
+     * * Export: None
+     * * Assertion: Add single astronaut to the mission, keep track astronaut's number.
+     */
     public void addAstronaut(Astronaut pAstronaut) {
         if (astronautCount >= MAX_ASTRONAUTS) {
             throw new IllegalArgumentException("Cannot add more astronauts!");
         }
         astronaut[astronautCount++] = pAstronaut;
     }
-    // Scanner in main for asking
-    public void editAstronaut(String astronaut_name) {
-        try (Scanner sc = new Scanner(System.in)) {
-            for (int i = 0; i < astronautCount; i++) {
-                Astronaut a = astronaut[i];
-                if (a.getName().equals(astronaut_name)) {
-                    System.out.println("Enter a new name (or Enter to keep): " + a.getName());
-                    String name = sc.nextLine(); 
-                    a.setName(name);
 
-                    System.out.println("Enter a new role (or Enter to keep): " + a.getRole());
-                    String role = sc.nextLine();
-                    a.setRole(role);
+    /* Function: addAstronautsToMission()
+     * * Import: None
+     * * Export: None
+     * * Assertion: Prompts the user to enter astronaut details via the console and adds them to the mission.
+     */
+    public void addAstronautsToMission() {
+        Scanner sc = new Scanner(System.in);
+        int numAstronauts;
 
-                    System.out.println("Enter a new age (or Enter to keep): " + a.getAge());
-                    int age = sc.nextInt();
-                    a.setAge(age);
+        while (true) {
+            try {
+                System.out.print("Enter the number of astronauts (1-5): ");
+                numAstronauts = Integer.parseInt(sc.nextLine().trim());
+                if (numAstronauts < 1 || numAstronauts > 5) {
+                    System.out.println("Error: Number of astronauts must be between 1 and 5. Please try again.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Please enter a valid number (1-5).");
+            }
+        }
 
-                    System.out.println("Enter a new nationality (or Enter to keep): " + a.getNationality());
-                    String nationality = sc.nextLine();
-                    a.setNationality(nationality);
+        for (int j = 0; j < numAstronauts; j++) {
+            System.out.println("--- Astronaut " + (j + 1) + " ---");
+
+            String asName;
+            do {
+                System.out.print("Enter astronaut's name: ");
+                asName = sc.nextLine().trim();
+                if (asName.isEmpty()) {
+                    System.out.println("Error: Astronaut name cannot be empty. Please try again.");
+                }
+            } while (asName.isEmpty());
+
+            String asRole;
+            do {
+                System.out.print("Enter astronaut's role: ");
+                asRole = sc.nextLine().trim();
+                if (asRole.isEmpty()) {
+                    System.out.println("Error: Astronaut role cannot be empty. Please try again.");
+                }
+            } while (asRole.isEmpty());
+
+            int asAge;
+            while (true) {
+                try {
+                    System.out.print("Enter astronaut's age (0-100): ");
+                    asAge = Integer.parseInt(sc.nextLine().trim());
+                    if (asAge < 0 || asAge > 100) {
+                        System.out.println("Error: Astronaut age must be between 0 and 100. Please try again.");
+                    } else {
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: Please enter a valid age (numbers only).");
                 }
             }
-            System.out.println("Astronaut updated!");
+
+            String asNationality;
+            do {
+                System.out.print("Enter astronaut's nationality: ");
+                asNationality = sc.nextLine().trim();
+                if (asNationality.isEmpty()) {
+                    System.out.println("Error: Astronaut nationality cannot be empty. Please try again.");
+                }
+            } while (asNationality.isEmpty());
+
+            Astronaut newAstronaut = new Astronaut(asName, asRole, asAge, asNationality);
+            addAstronaut(newAstronaut);
         }
     }
 
+    /* Function: editAstronaut()
+     * * Import: None
+     * * Export: None
+     * * Assertion: Prompts the user to enter astronaut details via the console and edit.
+     */
+    public void editAstronaut(String astronaut_name) {
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i < astronautCount; i++) {
+            Astronaut a = astronaut[i];
+            if (a.getName().equals(astronaut_name)) {
+                System.out.println("Enter a new name (or Enter to keep): ");
+                String name = sc.nextLine().trim();
+                if (!name.isEmpty()) {
+                    a.setName(name);
+                }
+
+                System.out.println("Enter a new role (or Enter to keep): ");
+                String role = sc.nextLine().trim();
+                if (!role.isEmpty()) {
+                    a.setRole(role);
+                }
+
+                System.out.println("Enter a new age (or Enter to keep): ");
+                String ageInput = sc.nextLine().trim();
+                if (!ageInput.isEmpty()) {
+                    try {
+                        int age = Integer.parseInt(ageInput);
+                        a.setAge(age);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid age input. Age not changed.");
+                    }
+                }
+
+                System.out.println("Enter a new nationality (or Enter to keep): ");
+                String nationality = sc.nextLine().trim();
+                if (!nationality.isEmpty()) {
+                    a.setNationality(nationality);
+                }
+                System.out.println("Astronaut updated!");
+                return;
+            }
+        }
+        System.out.println("Astronaut not found!");
+    }
+
+    /* Function: removeAstronaut()
+     * * Import: None
+     * * Export: None
+     * * Assertion: Remove astronaut from mission.
+     */
     public void removeAstronaut() {
         for (int i = 0; i < astronautCount; i++) {
             astronaut[i] = null;
@@ -124,6 +232,11 @@ public class Mission {
         astronautCount = 0;
     }
 
+    /* Function: listAstronautByNationality()
+     * * Import: asNationality (String)
+     * * Export: None
+     * * Assertion: Display astronaut by given nationality.
+     */
     public void listAstronautByNationality(String asNationality) {
         for (int i = 0; i < astronautCount; i++) {
             Astronaut a = astronaut[i];
@@ -136,8 +249,26 @@ public class Mission {
             }
         } 
     }
-
+    
+    /* Function: displayAstronaut()
+     * * Import: a (Astronaut class)
+     * * Export: None
+     * * Assertion: Display astronaut.
+     */
     public void displayAstronaut(Astronaut a) {
         System.out.println(a);
+        System.out.println();
     }
+    
+    /* Returns a string representation of the mission. */
+    @Override
+    public String toString() {
+        return "Mission Name: " + missionName + "\n" +
+            "Mission Code: " + missionCode + "\n" +
+            "Destination Planet: " + destinationPlanet + "\n" +
+            "Launch Year: " + launchYear + "\n" +
+            "Success Rate: " + successRate + "\n" +
+            "Is Manned: " + isManned;
+}
+
 }

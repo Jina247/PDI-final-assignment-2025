@@ -1,9 +1,11 @@
 public class Astronaut {
+    /* Class attributes */
     private String name;
     private String role;
     private int age;
     private String nationality;
 
+    /* Constructors */
     public Astronaut(String name, String role, int age, String nationality) {
         this.name = name;
         this.role = role;
@@ -11,6 +13,7 @@ public class Astronaut {
         this.nationality = nationality;
     }
 
+    /* Accessors */
     public String getName() {
         return name;
     }
@@ -25,8 +28,9 @@ public class Astronaut {
 
     public String getNationality() {
         return nationality;
-}
+    }
     
+    /* Mutators with validation */
     public void setName(String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty");
@@ -55,6 +59,7 @@ public class Astronaut {
         this.nationality = nationality;
     }
     @Override
+    /* Returns a string representation of the astronaut. */
     public String toString() {
         return "Name: " + name + "\n" +
             "Age: " + age + "\n" +

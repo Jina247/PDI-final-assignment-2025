@@ -2,7 +2,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         MissionController missionController = new MissionController(50);
-        missionController.readFile("1.csv");
+        missionController.readFile("data.csv");
         try (Scanner s = new Scanner(System.in)) {
             while (true) {
                 System.out.println("=============================================");
@@ -58,9 +58,9 @@ public class Main {
                         missionController.editMission(mCode);
                     }
                     case 7 -> {
-                        System.out.println("Average: %.2f%n" + missionController.getAverageSuccessRate());
-                        System.out.println("Max: %.2f%n" + missionController.getMaxSuccessRate());
-                        System.out.println("Min: %.2f%n" + missionController.getMinSuccessRate());
+                        System.out.printf("Average: %.2f%n", missionController.getAverageSuccessRate());
+                        System.out.printf("Max: %.2f%n", missionController.getMaxSuccessRate());
+                        System.out.printf("Min: %.2f%n", missionController.getMinSuccessRate());
                     }
                     case 8 -> {
                         System.out.print("Enter nationality: ");
