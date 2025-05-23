@@ -4,20 +4,18 @@ public class Mission {
     private String missionName;
     private String missionCode;
     private String destinationPlanet;
-    private int lauchYear;
+    private int launchYear;
     private double successRate;
     private boolean isManned;
     private static final int MAX_ASTRONAUTS = 5;
     Astronaut[] astronaut = new Astronaut[MAX_ASTRONAUTS];
     private int astronautCount = 0;
 
-    public Mission(String missionName, String missionCode, 
-                   String destinationPlanet, int lauchYear, 
-                   double successRate, boolean isManned) {
+    public Mission(String missionName, String missionCode, String destinationPlanet, int launchYear, double successRate, boolean isManned) {
         this.missionName = missionName;
         this.missionCode = missionCode;
         this.destinationPlanet = destinationPlanet;
-        this.lauchYear = lauchYear;
+        this.launchYear = launchYear;
         this.successRate = successRate;
         this.isManned = isManned;
     }
@@ -30,8 +28,8 @@ public class Mission {
     public String getDestinationPlanet() {
         return destinationPlanet;
     }
-    public int getLauchYear() {
-        return lauchYear;
+    public int getLaunchYear() {
+        return launchYear;
     }
     public double getSuccessRate() {
         return successRate;
@@ -64,14 +62,14 @@ public class Mission {
         }
         this.destinationPlanet = destinationPlanet;
     }
-    public void setLauchYear(int lauchYear) {
-        if (lauchYear < 1990 && lauchYear > 2100) {
+    public void setLaunchYear(int launchYear) {
+        if (launchYear < 1990 || launchYear > 2100) {
             throw new IllegalArgumentException("Launch year must be a valid integer between 1990 and 2100");
         }
-        this.lauchYear = lauchYear;
+        this.launchYear = launchYear;
     }
     public void setSuccessRate(double successRate) {
-        if (successRate < 0 && successRate > 100) {
+        if (successRate < 0.0 || successRate > 100.0) {
             throw new IllegalArgumentException("Success rate must be between 0 and 100");
         }
         this.successRate = successRate;
@@ -126,9 +124,7 @@ public class Mission {
         astronautCount = 0;
     }
 
-    public void listAstronaut(String asNationality) {
-        System.out.println("======List of astronaut matches a given nationality=====");
-        boolean found = false;
+    public void listAstronautByNationality(String asNationality) {
         for (int i = 0; i < astronautCount; i++) {
             Astronaut a = astronaut[i];
             if (a.getNationality().equals(asNationality)) {
@@ -137,15 +133,11 @@ public class Mission {
                 System.out.println("Age: " + a.getAge());
                 System.out.println("Nationality: " + a.getNationality());
                 System.out.println("-----------------------------");
-                found = true;
             }
-        }
-        if (!found) {
-            System.out.println("No astronauts found with nationality: " + asNationality);
-        }   
+        } 
     }
 
     public void displayAstronaut(Astronaut a) {
-        a.toString();
+        System.out.println(a);
     }
 }

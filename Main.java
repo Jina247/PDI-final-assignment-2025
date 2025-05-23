@@ -2,9 +2,8 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         MissionController missionController = new MissionController(50);
-        missionController.readFile("data.csv");
+        missionController.readFile("1.csv");
         try (Scanner s = new Scanner(System.in)) {
-            int choice = s.nextInt();
             while (true) {
                 System.out.println("=============================================");
                 System.out.println(" Welcome to Mission Command and Control");
@@ -19,25 +18,27 @@ public class Main {
                 System.out.println("7> Summary of missions' success rates (average, highest, lowest).");
                 System.out.println("8> List astronauts for a given nationality.");
                 System.out.println("9> Exit Mission Command and Control");
-                System.out.print("Please enter your choice (1-9): ");
+                System.out.println("Please enter your choice (1-9): ");
+                int choice = s.nextInt();
+                s.nextLine(); // Consume the newline character
 
                 switch (choice) {
                     case 1 -> {
-                        System.out.print("All missions");
+                        System.out.println("All missions");
                         for (int i = 0; i < missionController.getMissionCount(); i++) {
                             Mission m = missionController.getMissions()[i];
                             missionController.displayAllMissions(m);
                         }
                     }
                     case 2 -> {
-                        System.out.print("Manned Missons ");
+                        System.out.println("Manned Missons ");
                         Mission[] mannedMissions = missionController.getMannedMission();
                         for (Mission mMission : mannedMissions) {
                             missionController.displayAllMissions(mMission);
                         }
                     }
                     case 3 -> {
-                        System.out.print("Unmanned Missons ");
+                        System.out.println("Unmanned Missons ");
                         Mission[] unMannedMissions = missionController.getUnMannedMission();
                         for (Mission uMMission : unMannedMissions) {
                             missionController.displayAllMissions(uMMission);
@@ -46,11 +47,10 @@ public class Main {
                     case 4 -> {
                         System.out.print("Enter mission code to view astronauts: ");
                         String mCode = s.nextLine();
-                        missionController.displayAs(mCode);
+                        missionController.displayAstronautByMission(mCode);
                     }
                     case 5 -> {
                         missionController.addMission();
-                        missionController.writeFile("data.csv");
                     }
                     case 6 -> {
                         System.out.print("Enter mission code to edit:");
@@ -58,17 +58,19 @@ public class Main {
                         missionController.editMission(mCode);
                     }
                     case 7 -> {
-                        System.out.println("Average: %.2f" + missionController.getAverageSuccessRate());
-                        System.out.println("Max: %.2f" + missionController.getMaxSuccessRate());
-                        System.out.println("Min: %.2f" + missionController.getMinSuccessRate());
+                        System.out.println("Average: %.2f%n" + missionController.getAverageSuccessRate());
+                        System.out.println("Max: %.2f%n" + missionController.getMaxSuccessRate());
+                        System.out.println("Min: %.2f%n" + missionController.getMinSuccessRate());
                     }
                     case 8 -> {
                         System.out.print("Enter nationality: ");
                         String nationality = s.nextLine();
                         Mission[] m = missionController.getMissions();
                         boolean found = false;
+
+                        System.out.println("======List of astronaut matches a given nationality=====");
                         for (int i = 0; i < missionController.getMissionCount(); i++) {
-                            m[i].listAstronaut(nationality);
+                            m[i].listAstronautByNationality(nationality);
                             found = true;
                         }
                         if (!found) {
@@ -78,6 +80,7 @@ public class Main {
                     case 9 -> {
                         System.out.println("Exiting Mission Command and Control. Goodbye!");
                         System.exit(0);
+                        break;
                     }
                     default -> System.out.println("Invalid choice. Please enter a number from 1 to 9.");
                 }
