@@ -1,0 +1,100 @@
+CLASS Astronaut
+
+    CLASS FIELDS:
+        name (String)
+        role (String)
+        age (int)
+        nationality (String)
+
+    CONSTRUCTOR with PARAMETERS
+        IMPORT: name (String), role (String), age (int), nationality (String)
+        EXPORT: None
+        ASSERTION: Creates an Astronaut object with provided values
+        ALGORITHM:
+            this.name ← name
+            this.role ← role
+            this.age ← age
+            this.nationality ← nationality
+
+    ACCESSOR getName
+        IMPORT: None
+        EXPORT: name (String)
+        ASSERTION: Returns the name of the astronaut
+        ALGORITHM:
+            return name
+
+    ACCESSOR getRole
+        IMPORT: None
+        EXPORT: role (String)
+        ASSERTION: Returns the role of the astronaut
+        ALGORITHM:
+            return role
+
+    ACCESSOR getAge
+        IMPORT: None
+        EXPORT: age (int)
+        ASSERTION: Returns the age of the astronaut
+        ALGORITHM:
+            return age
+
+    ACCESSOR getNationality
+        IMPORT: None
+        EXPORT: nationality (String)
+        ASSERTION: Returns the nationality of the astronaut
+        ALGORITHM:
+            return nationality
+
+    MUTATOR setName
+        IMPORT: newName (String)
+        EXPORT: None
+        ASSERTION: Updates the name if not null or empty
+        ALGORITHM:
+            IF newName is null OR newName is empty THEN
+                THROW IllegalArgumentException
+            ELSE
+                name ← newName
+
+    MUTATOR setRole
+        IMPORT: newRole (String)
+        EXPORT: None
+        ASSERTION: Updates the role if not null or empty
+        ALGORITHM:
+            IF newRole is null OR newRole is empty THEN
+                THROW IllegalArgumentException
+            ELSE
+                role ← newRole
+
+    MUTATOR setAge
+        IMPORT: newAge (int)
+        EXPORT: None
+        ASSERTION: Updates the age if valid (0 ≤ age ≤ 100)
+        ALGORITHM:
+            IF newAge < 0 OR newAge > 100 THEN
+                THROW IllegalArgumentException
+            ELSE
+                age ← newAge
+
+    MUTATOR setNationality
+        IMPORT: newNationality (String)
+        EXPORT: None
+        ASSERTION: Updates the nationality if not null or empty
+        ALGORITHM:
+            IF newNationality is null OR newNationality is empty THEN
+                THROW IllegalArgumentException
+            ELSE
+                nationality ← newNationality
+
+    METHOD toString
+        IMPORT: None
+        EXPORT: astronautInfo (String)
+        ASSERTION: Returns formatted string of all fields
+        ALGORITHM:
+            RETURN "Name: " + name + "\n" +
+                   "Age: " + age + "\n" +
+                   "Role: " + role + "\n" +
+                   "Nationality: " + nationality
+
+END CLASS
+
+
+    

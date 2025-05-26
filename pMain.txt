@@ -1,0 +1,56 @@
+CLASS Main
+
+    METHOD main
+        IMPORT: None
+        EXPORT: None
+        ASSERTION: Acts as the entry point of the program and controls the main menu
+        ALGORITHM:
+            CREATE instance of MissionController
+            CALL controller.readFile("missions.csv")
+
+            REPEAT
+                DISPLAY main menu:
+                    1> View all Missions
+                    2> View all manned missions
+                    3> View all unmanned missions
+                    4> View a mission's astronauts
+                    5> Add a new mission
+                    6> Edit an existing mission
+                    7> Summary of missions' success rates
+                    8> List astronauts by nationality
+                    9> Exit
+
+                PROMPT user for choice
+                SWITCH user choice:
+                    CASE 1:
+                        DISPLAY All missions
+                        CALL controller.displayAllMissions()
+                    CASE 2:
+                        DISPLAY All manned missions
+                        CALL controller.displayAllMannedMissions()
+                    CASE 3:
+                        DISPLAY All unmanned missions
+                        CALL controller.displayAllUnmannedMissions()
+                    CASE 4: 
+                        PROMPT Enter mission code to view astronauts for mission code
+                        CALL controller.displayMissionAstronauts(missionCode)
+                    CASE 5:
+                        CALL controller.addNewMission()
+                    CASE 6:
+                        PROMPT for mission code
+                        CALL controller.editMission(missionCode)
+
+                    CASE 7:
+                        CALL controller.displaySuccessRateSummary()
+                    CASE 8:
+                        PROMPT for nationality
+                        CALL controller.listAstronautsByNationality(nationality)
+                    CASE 9:
+                        DISPLAY exit message
+                        EXIT loop
+                    DEFAULT:
+                        DISPLAY "Invalid choice. Try again."
+
+            UNTIL user chooses option 9
+
+END CLASS

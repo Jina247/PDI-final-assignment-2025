@@ -238,7 +238,9 @@ public class Mission {
      * * Assertion: Display astronaut by given nationality.
      */
     public void listAstronautByNationality(String asNationality) {
+        boolean found = false;
         for (int i = 0; i < astronautCount; i++) {
+            found = true;
             Astronaut a = astronaut[i];
             if (a.getNationality().equals(asNationality)) {
                 System.out.println("Name: " + a.getName());
@@ -248,7 +250,10 @@ public class Mission {
                 System.out.println("-----------------------------");
             }
         } 
-    }
+        if (!found) {
+            System.out.println("No astronaut with the given nationality: " + asNationality);
+        }
+}
     
     /* Function: displayAstronaut()
      * * Import: a (Astronaut class)

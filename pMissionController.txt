@@ -1,0 +1,104 @@
+CLASS MissionController
+
+    CLASS FIELDS:
+        missions (Array of Mission, size N)
+        missionCount (int)
+
+    CONSTRUCTOR
+        IMPORT: None
+        EXPORT: None
+        ASSERTION: Initializes empty mission list
+        ALGORITHM:
+            missions ← new Mission[N]
+            missionCount ← 0
+
+    METHOD readFile
+        IMPORT: fileName (String)
+        EXPORT: None
+        ASSERTION: Loads missions from file into memory
+        ALGORITHM:
+            theFile = OPENFILE fileName
+            READLINE line FROM theFile
+            WHILE NOT line = NULL
+                PARSE each mission field to Mission object
+                IF manned THEN
+                    PARSE astronaut string to Astronaut object
+                    ADD to mission
+                END IF
+                ADD mission to missions array
+                missionCount ← missionCount + 1
+    
+        METHOD writeFile
+        IMPORT: fileName (String)
+        EXPORT: None
+        ASSERTION: Saves all missions to file
+        ALGORITHM:
+            OPEN file for writing
+            WRITE header
+            FOR each mission
+                BUILD comma-separated line
+                IF manned THEN
+                    APPEND astronaut list in proper format
+                END IF
+                WRITE line
+
+    METHOD addNewMission
+        IMPORT: None
+        EXPORT: None
+        ASSERTION: Adds a new mission with user input
+        ALGORITHM:
+            PROMPT user for mission info
+            IF manned THEN
+                PROMPT for number of astronauts
+                FOR each astronaut
+                    PROMPT for astronaut info
+                    ADD to mission
+                END FOR
+            ADD mission to array
+            missionCount ← missionCount + 1
+
+    METHOD editMission
+        IMPORT: missionCode (String)
+        EXPORT: None
+        ASSERTION: Finds and updates an existing mission
+        ALGORITHM:
+            SEARCH for mission by missionCode
+            IF found THEN
+                PROMPT for new values (Enter to skip)
+                IF manned = true AND no astronauts THEN
+                    PROMPT to add astronauts
+                IF still manned THEN
+                    PROMPT to edit astronaut
+                ELSE
+                    REMOVE all astronauts
+                END IF
+            ELSE
+                DISPLAY "Mission not found"
+
+    METHOD displayAllMissions
+        IMPORT: None
+        EXPORT: None
+        ASSERTION: Lists all missions
+        ALGORITHM:
+            FOR each mission
+                DISPLAY mission.toString()
+
+    METHOD listAstronautsByNationality
+        IMPORT: nationality (String)
+        EXPORT: None
+        ASSERTION: Lists all astronauts with given nationality
+        ALGORITHM:
+            FOR each mission
+                FOR each astronaut
+                    IF astronaut.nationality = input
+                        DISPLAY astronaut info
+
+    METHOD displaySuccessRateSummary
+        IMPORT: None
+        EXPORT: None
+        ASSERTION: Displays average, max, and min success rates
+        ALGORITHM:
+            CALCULATE total success rate, max, and min
+            DISPLAY results
+
+END CLASS

@@ -1,0 +1,73 @@
+CLASS Mission
+    CLASS FIELDS:
+        missionName (String)
+        missionCode (String)
+        destinationPlanet (String)
+        launchYear (int)
+        successRate (double)
+        isManned (boolean)
+        astronauts (Array of Astronaut, size 5)
+        astronautCount (int)
+
+    CONSTRUCTOR with PARAMETERS
+        IMPORT: missionName (String), missionCode (String), destinationPlanet (String),
+                launchYear (int), successRate (double), isManned (boolean)
+        EXPORT: None
+        ASSERTION: Creates a mission object with basic info and empty astronaut list
+        ALGORITHM:
+            this.missionName ← missionName
+            this.missionCode ← missionCode
+            this.destinationPlanet ← destinationPlanet
+            this.launchYear ← launchYear
+            this.successRate ← successRate
+            this.isManned ← isManned
+            this.astronauts ← new Astronaut[5]
+            this.astronautCount ← 0
+
+    ACCESSORS: getMissionName, getMissionCode, getDestinationPlanet, getLaunchYear,
+               getSuccessRate, isManned, getAstronauts, getAstronautCount
+
+    MUTATORS: setMissionName, setMissionCode, setDestinationPlanet, setLaunchYear,
+              setSuccessRate, setManned
+
+    METHOD addAstronaut
+        IMPORT: astronaut (Astronaut)
+        EXPORT: None
+        ASSERTION: Adds an astronaut if count < 5
+        ALGORITHM:
+            IF astronautCount < 5 THEN
+                astronauts[astronautCount] ← astronaut
+                astronautCount ← astronautCount + 1
+            ELSE
+                DISPLAY "Astronaut limit reached"
+
+    METHOD removeAstronaut
+        IMPORT: None
+        EXPORT: None
+        ASSERTION: Removes all astronauts from mission
+        ALGORITHM:
+            FOR i FROM 0 TO astronautCount - 1
+                astronauts[i] ← null
+            END FOR
+            astronautCount ← 0
+
+    METHOD editAstronaut
+        IMPORT: name (String)
+        EXPORT: None
+        ASSERTION: Edits astronaut with given name
+        ALGORITHM:
+            SEARCH for astronaut with matching name
+            IF found THEN
+                PROMPT for new role, age, nationality
+                UPDATE fields via setters
+            ELSE
+                DISPLAY "Astronaut not found"
+
+    METHOD toString
+        IMPORT: None
+        EXPORT: missionInfo (String)
+        ASSERTION: Returns formatted mission details
+        ALGORITHM:
+            RETURN missionName, missionCode, destinationPlanet, launchYear, successRate, isManned
+
+END CLASS

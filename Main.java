@@ -53,7 +53,7 @@ public class Main {
                         missionController.addMission();
                     }
                     case 6 -> {
-                        System.out.print("Enter mission code to edit:");
+                        System.out.print("Enter mission code to edit: ");
                         String mCode = s.nextLine();
                         missionController.editMission(mCode);
                     }

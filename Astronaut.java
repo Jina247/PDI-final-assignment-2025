@@ -46,7 +46,7 @@ public class Astronaut {
     }
 
     public void setRole(String role) {
-        if (role== null || role.isEmpty()) {
+        if (role == null || role.isEmpty()) {
             throw new IllegalArgumentException("Role cannot be null or empty");
         }
         this.role = role;
